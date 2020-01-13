@@ -11,17 +11,21 @@ class Main extends HTMLElement {
     this.attachShadow({ mode: 'open' }).innerHTML = `
       <style>
         :host {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        
-        h1 {
-          font-size: 32px;
+          display: block;
+          font-family: sans-serif;
+          letter-spacing: .02em;
+          // font-size: 1.2em;
         }
       </style>
-      <h1>Nonprofits Website</h1>
     `;
+
+    fetch('src/main/template/NonprofitsApp.html').then((data) => data.text()).then((html) => {
+      const template = document.createElement('template');
+      template.innerHTML = html;
+      template.content.querySelector('article').classList.remove('serif');
+      this.shadowRoot.prepend(template.content.querySelector('article').cloneNode(true));
+      this.shadowRoot.prepend(template.content.querySelector('style').cloneNode(true));
+    });
   }
 }
 
