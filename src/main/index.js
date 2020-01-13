@@ -19,9 +19,14 @@ class Main extends HTMLElement {
       </style>
     `;
 
-    fetch('src/main/template/NonprofitsApp.html').then((data) => data.text()).then((html) => {
+    fetch('src/main/template/Nonprofits.html').then((data) => data.text()).then((html) => {
       const template = document.createElement('template');
       template.innerHTML = html;
+      for (const element of template.content.querySelectorAll('[src]')) {
+        if (!element.getAttribute('src').startsWith('http')) {
+          element.src = `src/main/template/${element.getAttribute('src')}`;
+        }
+      }
       template.content.querySelector('article').classList.remove('serif');
       this.shadowRoot.prepend(template.content.querySelector('article').cloneNode(true));
       this.shadowRoot.prepend(template.content.querySelector('style').cloneNode(true));
